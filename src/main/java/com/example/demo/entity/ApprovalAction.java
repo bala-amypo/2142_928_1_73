@@ -1,43 +1,3 @@
-WorkflowTemplate 
-
-@Entity
-public class WorkflowTemplate {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true)
-    private String templateName;
-
-    private String description;
-    private Integer totalLevels;
-    private Boolean active;
-}
-
-
-WorkflowStepConfig
-
-@Entity
-public class WorkflowStepConfig {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long templateld; // MUST be Long
-
-    private Integer levelNumber;
-    private String approverRole;
-    private Boolean isFinalStep;
-    private String instructions;
-}
-
-
-
-ApprovalAction
-
-
 @Entity
 public class ApprovalAction {
 
@@ -57,26 +17,6 @@ public class ApprovalAction {
 
 
 
-User
-
-
-@Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String username;
-    private String email;
-    private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
-}
-
-
-
 
 ////////////////////////////////////
 
@@ -90,12 +30,7 @@ public interface WorkflowStepConfigRepository extends JpaRepository<WorkflowStep
 }
 
 
-ApprovalActionRepository 
 
-
-public interface ApprovalActionRepository extends JpaRepository<ApprovalAction, Long> {
-    List<ApprovalAction> findByLevelAndAction(Integer levelNumber, String action);
-}
 
 
 AuditLogRecordRepository
@@ -118,145 +53,9 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 SERVICES
 
 
-UserService
 
 
 
-@Service
-public class UserService {
-
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public User registerUser(User user, String roleName) {
-        Role role = roleRepository.findByName(roleName)
-                .orElseThrow();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Set.of(role));
-        return userRepository.save(user);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow();
-    }
-}
-
-/////////////////////
-
-ApprovalRequestService
-
-package com.example.demo.service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.ApprovalRequest;
-import com.example.demo.repository.ApprovalActionRepository;
-import com.example.demo.repository.ApprovalRequestRepository;
-import com.example.demo.repository.WorkflowStepConfigRepository;
-import com.example.demo.repository.WorkflowTemplateRepository;
-
-@Service
-public class ApprovalRequestService {
-
-    private final ApprovalRequestRepository approvalRequestRepository;
-    private final WorkflowStepConfigRepository workflowStepConfigRepository;
-    private final WorkflowTemplateRepository workflowTemplateRepository;
-    private final ApprovalActionRepository approvalActionRepository;
-
-    // ✅ Constructor order MUST match EXACTLY
-    public ApprovalRequestService(
-            ApprovalRequestRepository approvalRequestRepository,
-            WorkflowStepConfigRepository workflowStepConfigRepository,
-            WorkflowTemplateRepository workflowTemplateRepository,
-            ApprovalActionRepository approvalActionRepository) {
-
-        this.approvalRequestRepository = approvalRequestRepository;
-        this.workflowStepConfigRepository = workflowStepConfigRepository;
-        this.workflowTemplateRepository = workflowTemplateRepository;
-        this.approvalActionRepository = approvalActionRepository;
-    }
-
-    public ApprovalRequest createRequest(ApprovalRequest req) {
-        req.setStatus("PENDING");
-        req.setCreatedAt(LocalDateTime.now());
-        req.setCurrentLevel(1);
-        return approvalRequestRepository.save(req);
-    }
-
-    public List<ApprovalRequest> getRequestsByRequester(Long userld) {
-        return approvalRequestRepository.findByRequesterld(userld);
-    }
-
-    public List<ApprovalRequest> getAllRequests() {
-        return approvalRequestRepository.findAll();
-    }
-}
-
-/////////////////
-
-WorkflowTemplateService
-
-package com.example.demo.service;
-
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.WorkflowTemplate;
-import com.example.demo.repository.WorkflowTemplateRepository;
-
-@Service
-public class WorkflowTemplateService {
-
-    private final WorkflowTemplateRepository workflowTemplateRepository;
-
-    // ✅ Constructor order MUST match
-    public WorkflowTemplateService(WorkflowTemplateRepository workflowTemplateRepository) {
-        this.workflowTemplateRepository = workflowTemplateRepository;
-    }
-
-    public WorkflowTemplate createTemplate(WorkflowTemplate t) {
-        return workflowTemplateRepository.save(t);
-    }
-
-    public WorkflowTemplate getTemplateByld(Long id) {
-        return workflowTemplateRepository.findById(id).orElseThrow();
-    }
-
-    public List<WorkflowTemplate> getAllTemplates() {
-        return workflowTemplateRepository.findAll();
-    }
-
-    public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate t) {
-        WorkflowTemplate existing = getTemplateByld(id);
-        existing.setTemplateName(t.getTemplateName());
-        existing.setDescription(t.getDescription());
-        existing.setTotalLevels(t.getTotalLevels());
-        existing.setActive(t.getActive());
-        return workflowTemplateRepository.save(existing);
-    }
-
-    public WorkflowTemplate activateTemplate(Long id, boolean active) {
-        WorkflowTemplate template = getTemplateByld(id);
-        template.setActive(active);
-        return workflowTemplateRepository.save(template);
-    }
-}
-
-
-///////
 
 WorkflowStepConfigService
 
@@ -291,38 +90,7 @@ public class WorkflowStepConfigService {
 
 /////////////////
 
-ApprovalActionService
 
-package com.example.demo.service;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.ApprovalAction;
-import com.example.demo.repository.ApprovalActionRepository;
-import com.example.demo.repository.ApprovalRequestRepository;
-
-@Service
-public class ApprovalActionService {
-
-    private final ApprovalActionRepository approvalActionRepository;
-    private final ApprovalRequestRepository approvalRequestRepository;
-
-    // ✅ Constructor order MUST match
-    public ApprovalActionService(
-            ApprovalActionRepository approvalActionRepository,
-            ApprovalRequestRepository approvalRequestRepository) {
-
-        this.approvalActionRepository = approvalActionRepository;
-        this.approvalRequestRepository = approvalRequestRepository;
-    }
-
-    public ApprovalAction recordAction(ApprovalAction action) {
-        return approvalActionRepository.save(action);
-    }
-}
-
-
-////////////////
 
 UserService
 

@@ -1,4 +1,10 @@
+package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+import jakarta.persistence.*;
+
 @Entity
+@Table(name = "audit_log_record")
 public class AuditLogRecord {
 
     @Id
@@ -9,5 +15,8 @@ public class AuditLogRecord {
     private String eventType;
     private String details;
 
+    @Column(nullable = false)
     private LocalDateTime loggedAt = LocalDateTime.now();
+
+    // getters & setters
 }

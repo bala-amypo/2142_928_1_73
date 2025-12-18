@@ -1,98 +1,17 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
+
+    // getters & setters
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// com.example.demo
-// ├── DemoApplication.java
-// ├── config
-// │   ├── JwtAuthenticationFilter.java
-// │   ├── JwtTokenProvider.java
-// │   ├── SecurityConfig.java
-// │   └── SwaggerConfig.java
-// ├── controller
-// │   ├── AuthController.java
-// │   ├── WorkflowTemplateController.java
-// │   ├── WorkflowStepConfigController.java
-// │   └── ApprovalRequestController.java
-// ├── dto
-// │   ├── AuthRequest.java
-// │   ├── RegisterRequest.java
-// │   └── AuthResponse.java
-// ├── entity
-// │   ├── WorkflowTemplate.java
-// │   ├── WorkflowStepConfig.java
-// │   ├── ApprovalRequest.java
-// │   ├── ApprovalAction.java
-// │   ├── AuditLogRecord.java
-// │   ├── User.java
-// │   └── Role.java
-// ├── repository
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   └── 
-// ├── service
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   ├── 
-// │   └── 
-// ├── servlet
-// │   └── SimpleServlet.java
-// └── util
-//     └── HibernateQueryUtil.java

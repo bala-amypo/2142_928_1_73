@@ -1,5 +1,3 @@
-WorkflowTemplateService
-
 package com.example.demo.service;
 
 import java.util.List;
@@ -46,7 +44,3 @@ public class WorkflowTemplateService {
         return workflowTemplateRepository.save(template);
     }
 }
-
-
-///////
-

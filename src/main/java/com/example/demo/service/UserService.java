@@ -1,3 +1,15 @@
+package com.example.demo.service;
+
+import java.util.Set;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Role;
+import com.example.demo.entity.User;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserRepository;
+
 @Service
 public class UserService {
 
@@ -5,6 +17,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // ✅ Constructor order MUST match EXACTLY
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder) {
@@ -14,8 +27,7 @@ public class UserService {
     }
 
     public User registerUser(User user, String roleName) {
-        Role role = roleRepository.findByName(roleName)
-                .orElseThrow();
+        Role role = roleRepository.findByName(roleName).orElseThrow();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Set.of(role));
         return userRepository.save(user);
@@ -25,3 +37,5 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow();
     }
 }
+
+

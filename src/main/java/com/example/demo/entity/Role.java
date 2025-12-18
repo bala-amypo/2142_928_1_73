@@ -24,18 +24,18 @@ com.example.demo
 │   └── Role.java
 ├── repository
 │   ├── 
-│   ├── WorkflowStepConfigRepository.java
-│   ├── ApprovalRequestRepository.java
-│   ├── ApprovalActionRepository.java
-│   ├── AuditLogRecordRepository.java
-│   ├── UserRepository.java
-│   └── RoleRepository.java
+│   ├── 
+│   ├── 
+│   ├── 
+│   ├── 
+│   ├── 
+│   └── 
 ├── service
-│   ├── WorkflowTemplateService.java
-│   ├── WorkflowStepConfigService.java
-│   ├── ApprovalRequestService.java
-│   ├── ApprovalActionService.java
-│   └── UserService.java
+│   ├── 
+│   ├── 
+│   ├── 
+│   ├── 
+│   └── 
 ├── servlet
 │   └── SimpleServlet.java
 └── util

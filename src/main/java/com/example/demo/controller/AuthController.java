@@ -16,7 +16,6 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthController(UserService userService,
                           AuthenticationManager authenticationManager,

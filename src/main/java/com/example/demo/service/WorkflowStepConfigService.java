@@ -16,11 +16,7 @@ public class WorkflowStepConfigService {
         this.repository = repository;
     }
 
-    public WorkflowStepConfig create(WorkflowStepConfig step) {
-        return repository.save(step);
-    }
-
-    public List<WorkflowStepConfig> getByTemplateId(Long templateld) {
-        return repository.findByTemplateldOrderByLevelNumberAsc(templateld);
+    public List<WorkflowStepConfig> getStepsByTemplateId(Long templateId) {
+        return repository.findByTemplateIdOrderByLevelNumberAsc(templateId);
     }
 }

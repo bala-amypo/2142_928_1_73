@@ -9,5 +9,6 @@ import com.example.demo.entity.WorkflowStepConfig;
 public interface WorkflowStepConfigRepository
         extends JpaRepository<WorkflowStepConfig, Long> {
 
-    List<WorkflowStepConfig> findByTemplateldOrderByLevelNumberAsc(Long templateld);
+    // ✅ FIXED: templateId (capital I)
+    List<WorkflowStepConfig> findByTemplateIdOrderByLevelNumberAsc(Long templateId);
 }

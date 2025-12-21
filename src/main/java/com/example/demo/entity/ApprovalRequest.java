@@ -1,29 +1,34 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "approval_request")
 public class ApprovalRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long templateld;
-    private Long requesterld;
-
+    private Long templateId;
+    private Long requesterId;
     private String requestTitle;
 
     @Lob
     private String requestPayloadJson;
 
-    private String status = "PENDING";
+    private String status;
     private Integer currentLevel;
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public Long getId() { return id; }
+    public Long getTemplateId() { return templateId; }
+    public Long getRequesterId() { return requesterId; }
 
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setTemplateId(Long templateId) { this.templateId = templateId; }
+    public void setRequesterId(Long requesterId) { this.requesterId = requesterId; }
+    public void setStatus(String status) { this.status = status; }
+    public void setCurrentLevel(Integer currentLevel) { this.currentLevel = currentLevel; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

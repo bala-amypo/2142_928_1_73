@@ -11,5 +11,3 @@ public interface ApprovalActionRepository
 
     List<ApprovalAction> findByLevelAndAction(Integer levelNumber, String action);
 }
-
-

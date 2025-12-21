@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ApprovalAction;
@@ -9,19 +11,18 @@ import com.example.demo.repository.ApprovalRequestRepository;
 @Service
 public class ApprovalActionService {
 
-    private final ApprovalActionRepository approvalActionRepository;
-    private final ApprovalRequestRepository approvalRequestRepository;
+    private final ApprovalActionRepository actionRepository;
+    private final ApprovalRequestRepository requestRepository;
 
-    // ✅ Constructor order MUST match
-    public ApprovalActionService(
-            ApprovalActionRepository approvalActionRepository,
-            ApprovalRequestRepository approvalRequestRepository) {
-
-        this.approvalActionRepository = approvalActionRepository;
-        this.approvalRequestRepository = approvalRequestRepository;
+    // Constructor order DOES NOT use security
+    public ApprovalActionService(ApprovalActionRepository actionRepository,
+                                 ApprovalRequestRepository requestRepository) {
+        this.actionRepository = actionRepository;
+        this.requestRepository = requestRepository;
     }
 
     public ApprovalAction recordAction(ApprovalAction action) {
-        return approvalActionRepository.save(action);
+        action.setActionDate(LocalDateTime.now());
+        return actionRepository.save(action);
     }
 }

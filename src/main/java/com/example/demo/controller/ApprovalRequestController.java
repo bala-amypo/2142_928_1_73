@@ -8,7 +8,7 @@ import com.example.demo.entity.ApprovalRequest;
 import com.example.demo.service.ApprovalRequestService;
 
 @RestController
-@RequestMapping("/api/requests")
+@RequestMapping("/approval-requests")
 public class ApprovalRequestController {
 
     private final ApprovalRequestService service;
@@ -18,12 +18,19 @@ public class ApprovalRequestController {
     }
 
     @PostMapping
-    public ApprovalRequest create(@RequestBody ApprovalRequest req) {
-        return service.createRequest(req);
+    public ApprovalRequest create(@RequestBody ApprovalRequest request) {
+        return service.createRequest(request);
     }
 
     @GetMapping
-    public List<ApprovalRequest> list() {
+    public List<ApprovalRequest> getAll() {
         return service.getAllRequests();
     }
-}
+
+    @GetMapping("/{id}")
+    public ApprovalRequest getById(@PathVariable Long id) {
+        return service.getRequestById(id);
+    }
+
+    @PutMapping("/{id}/approve")
+    public Appr

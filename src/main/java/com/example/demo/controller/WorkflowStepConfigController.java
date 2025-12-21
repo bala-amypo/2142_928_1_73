@@ -8,7 +8,7 @@ import com.example.demo.entity.WorkflowStepConfig;
 import com.example.demo.service.WorkflowStepConfigService;
 
 @RestController
-@RequestMapping("/api/steps")
+@RequestMapping("/workflow-steps")
 public class WorkflowStepConfigController {
 
     private final WorkflowStepConfigService service;
@@ -19,11 +19,11 @@ public class WorkflowStepConfigController {
 
     @PostMapping
     public WorkflowStepConfig create(@RequestBody WorkflowStepConfig step) {
-        return service.createstep(step);
+        return service.create(step);
     }
 
-    @GetMapping("/template/{templateld}")
-    public List<WorkflowStepConfig> list(@PathVariable Long templateld) {
-        return service.getStepsForTemplate(templateld);
+    @GetMapping("/template/{templateId}")
+    public List<WorkflowStepConfig> getByTemplate(@PathVariable Long templateId) {
+        return service.getByTemplateId(templateId);
     }
 }

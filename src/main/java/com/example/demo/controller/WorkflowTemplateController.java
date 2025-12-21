@@ -8,7 +8,7 @@ import com.example.demo.entity.WorkflowTemplate;
 import com.example.demo.service.WorkflowTemplateService;
 
 @RestController
-@RequestMapping("/api/templates")
+@RequestMapping("/workflow-templates")
 public class WorkflowTemplateController {
 
     private final WorkflowTemplateService service;
@@ -18,23 +18,17 @@ public class WorkflowTemplateController {
     }
 
     @PostMapping
-    public WorkflowTemplate create(@RequestBody WorkflowTemplate t) {
-        return service.createTemplate(t);
-    }
-
-    @GetMapping("/{id}")
-    public WorkflowTemplate get(@PathVariable Long id) {
-        return service.getTemplateByld(id);
+    public WorkflowTemplate create(@RequestBody WorkflowTemplate template) {
+        return service.createTemplate(template);
     }
 
     @GetMapping
-    public List<WorkflowTemplate> list() {
+    public List<WorkflowTemplate> getAll() {
         return service.getAllTemplates();
     }
 
-    @PutMapping("/{id}")
-    public WorkflowTemplate update(@PathVariable Long id,
-                                   @RequestBody WorkflowTemplate t) {
-        return service.updateTemplate(id, t);
+    @PutMapping("/{id}/activate")
+    public WorkflowTemplate activate(@PathVariable Long id) {
+        return service.activateTemplate(id);
     }
 }

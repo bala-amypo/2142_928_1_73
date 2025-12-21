@@ -9,5 +9,6 @@ import com.example.demo.entity.ApprovalRequest;
 public interface ApprovalRequestRepository
         extends JpaRepository<ApprovalRequest, Long> {
 
-    List<ApprovalRequest> findByRequesterld(Long requesterld);
+    // ✅ FIXED: Id (capital I)
+    List<ApprovalRequest> findByRequesterId(Long requesterId);
 }

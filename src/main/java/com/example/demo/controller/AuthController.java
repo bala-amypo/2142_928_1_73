@@ -17,12 +17,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-        return userService.register(user);
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        boolean success = userService.login(user.getUsername(), user.getPassword());
-        return success ? "Login successful" : "Invalid credentials";
+        return userService.save(user);
     }
 }

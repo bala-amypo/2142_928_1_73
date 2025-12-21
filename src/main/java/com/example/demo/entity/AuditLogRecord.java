@@ -1,22 +1,21 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "audit_log_record")
 public class AuditLogRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long requestld;
+    private Long requestId;
     private String eventType;
     private String details;
+    private LocalDateTime loggedAt;
 
-    @Column(nullable = false)
-    private LocalDateTime loggedAt = LocalDateTime.now();
-
-    // getters & setters
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
+    }
 }

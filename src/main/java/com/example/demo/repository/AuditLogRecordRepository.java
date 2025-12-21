@@ -9,5 +9,6 @@ import com.example.demo.entity.AuditLogRecord;
 public interface AuditLogRecordRepository
         extends JpaRepository<AuditLogRecord, Long> {
 
-    List<AuditLogRecord> findByRequestld(Long requestld);
+    // ✅ MUST match entity field exactly
+    List<AuditLogRecord> findByRequestId(Long requestId);
 }

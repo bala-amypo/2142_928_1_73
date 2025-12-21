@@ -22,8 +22,8 @@ public class WorkflowStepConfigController {
         return service.create(step);
     }
 
-    @GetMapping("/template/{templateId}")
-    public List<WorkflowStepConfig> getByTemplate(@PathVariable Long templateId) {
-        return service.getByTemplateId(templateId);
+    @GetMapping("/template/{templateld}")
+    public List<WorkflowStepConfig> getByTemplateId(@PathVariable Long templateld) {
+        return service.getByTemplateId(templateld);
     }
 }

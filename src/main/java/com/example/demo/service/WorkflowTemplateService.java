@@ -1,28 +1,35 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.WorkflowTemplate;
 import com.example.demo.repository.WorkflowTemplateRepository;
 
 @Service
 public class WorkflowTemplateService {
 
-    private final WorkflowTemplateRepository repo;
+    private final WorkflowTemplateRepository repository;
 
-    public WorkflowTemplateService(WorkflowTemplateRepository repo) {
-        this.repo = repo;
+    public WorkflowTemplateService(WorkflowTemplateRepository repository) {
+        this.repository = repository;
     }
 
-    public WorkflowTemplate createTemplate(WorkflowTemplate t) {
-        return repo.save(t);
+    public WorkflowTemplate createTemplate(WorkflowTemplate template) {
+        return repository.save(template);
     }
 
-    public WorkflowTemplate getTemplate(Long id) {
-        return repo.findById(id).orElse(null);
+    public List<WorkflowTemplate> getAllTemplates() {
+        return repository.findAll();
     }
 
-    public List<WorkflowTemplate> getAll() {
-        return repo.findAll();
+    public WorkflowTemplate activateTemplate(Long id) {
+        WorkflowTemplate template = repository.findById(id).orElse(null);
+        if (template != null) {
+            template.setActive(true);
+            return repository.save(template);
+        }
+        return null;
     }
 }

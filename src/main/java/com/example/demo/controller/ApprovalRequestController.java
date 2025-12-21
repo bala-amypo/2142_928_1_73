@@ -33,4 +33,12 @@ public class ApprovalRequestController {
     }
 
     @PutMapping("/{id}/approve")
-    public Appr
+    public ApprovalRequest approve(@PathVariable Long id) {
+        return service.approveRequest(id);
+    }
+
+    @PutMapping("/{id}/reject")
+    public ApprovalRequest reject(@PathVariable Long id) {
+        return service.rejectRequest(id);
+    }
+}

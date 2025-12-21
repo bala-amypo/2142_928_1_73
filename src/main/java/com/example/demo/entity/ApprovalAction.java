@@ -1,54 +1,43 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "approval_action")
 public class ApprovalAction {
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
-@Entity
-public class ApprovalAction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long requestId;
-    private Long approverId;
-    private Integer levelNumber;
-    private String action;
-    private String comments;
-    private LocalDateTime actionDate;
+    private Integer level;
 
-    public void setActionDate(LocalDateTime actionDate) {
-        this.actionDate = actionDate;
+    private String action;
+
+    public ApprovalAction() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long requestid;
-    private Long approverld;
-    private Integer levelNumber;
-
-    private String action;
-    private String comments;
-
-    @Column(nullable = false)
-    private LocalDateTime actionDate = LocalDateTime.now();
-
-    // getters & setters
-}
-
-
-
-
-
-

@@ -7,3 +7,4 @@ import com.example.demo.entity.WorkflowTemplate;
 public interface WorkflowTemplateRepository
         extends JpaRepository<WorkflowTemplate, Long> {
 }
+

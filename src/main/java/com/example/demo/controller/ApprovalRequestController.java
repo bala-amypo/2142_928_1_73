@@ -17,9 +17,10 @@ public class ApprovalRequestController {
         this.service = service;
     }
 
-    @PostMapping
-    public ApprovalRequest create(@RequestBody ApprovalRequest request) {
-        return service.createRequest(request);
+    @PostMapping("/{templateId}")
+    public ApprovalRequest create(@RequestBody ApprovalRequest request,
+                                  @PathVariable Long templateId) {
+        return service.createRequest(request, templateId);
     }
 
     @GetMapping
@@ -30,15 +31,5 @@ public class ApprovalRequestController {
     @GetMapping("/{id}")
     public ApprovalRequest getById(@PathVariable Long id) {
         return service.getRequestById(id);
-    }
-
-    @PutMapping("/{id}/approve")
-    public ApprovalRequest approve(@PathVariable Long id) {
-        return service.approveRequest(id);
-    }
-
-    @PutMapping("/{id}/reject")
-    public ApprovalRequest reject(@PathVariable Long id) {
-        return service.rejectRequest(id);
     }
 }

@@ -25,8 +25,8 @@ public class WorkflowTemplateService {
         return repository.findAll();
     }
 
-    public WorkflowTemplate getTemplate(Long id) {
+    public WorkflowTemplate getTemplateById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Template not found"));
+                .orElseThrow(() -> new RuntimeException("Workflow Template not found"));
     }
 }

@@ -38,8 +38,8 @@ public class ApprovalRequestService {
         return requestRepository.findAll();
     }
 
-    public ApprovalRequest getRequest(Long id) {
+    public ApprovalRequest getRequestById(Long id) {
         return requestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new RuntimeException("Approval Request not found"));
     }
 }

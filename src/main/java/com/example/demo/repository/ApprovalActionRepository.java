@@ -1,14 +1,11 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
+import com.example.demo.entity.ApprovalAction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.entity.ApprovalAction;
+import java.util.List;
 
-public interface ApprovalActionRepository
-        extends JpaRepository<ApprovalAction, Long> {
+public interface ApprovalActionRepository extends JpaRepository<ApprovalAction, Long> {
 
-    // ✅ MUST match entity fields EXACTLY
-    List<ApprovalAction> findByLevelNumberAndAction(Integer levelNumber, String action);
+    List<ApprovalAction> findByApprovalRequest_Id(Long requestId);
 }

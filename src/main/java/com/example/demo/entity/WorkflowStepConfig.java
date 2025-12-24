@@ -3,60 +3,35 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "workflow_step_config")
+@Table(name = "workflow_steps")
 public class WorkflowStepConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long templateId;
-    private Integer levelNumber;
+    private int level;
+
     private String approverRole;
-    private Boolean isFinalStep;
-    private String instructions;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "template_id")
+    private WorkflowTemplate workflowTemplate;
 
-    public Long getTemplateId() {
-        return templateId;
-    }
+    public WorkflowStepConfig() {}
 
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Integer getLevelNumber() {
-        return levelNumber;
-    }
+    public int getLevel() { return level; }
+    public void setLevel(int level) { this.level = level; }
 
-    public void setLevelNumber(Integer levelNumber) {
-        this.levelNumber = levelNumber;
-    }
+    public String getApproverRole() { return approverRole; }
+    public void setApproverRole(String approverRole) { this.approverRole = approverRole; }
 
-    public String getApproverRole() {
-        return approverRole;
-    }
-
-    public void setApproverRole(String approverRole) {
-        this.approverRole = approverRole;
-    }
-
-    public Boolean getIsFinalStep() {
-        return isFinalStep;
-    }
-
-    public void setIsFinalStep(Boolean isFinalStep) {
-        this.isFinalStep = isFinalStep;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public WorkflowTemplate getWorkflowTemplate() { return workflowTemplate; }
+    public void setWorkflowTemplate(WorkflowTemplate workflowTemplate) {
+        this.workflowTemplate = workflowTemplate;
     }
 }

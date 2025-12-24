@@ -1,14 +1,13 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
+import com.example.demo.entity.ApprovalRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.entity.ApprovalRequest;
+import java.util.List;
 
-public interface ApprovalRequestRepository
-        extends JpaRepository<ApprovalRequest, Long> {
+public interface ApprovalRequestRepository extends JpaRepository<ApprovalRequest, Long> {
 
-    // ✅ FIXED: Id (capital I)
-    List<ApprovalRequest> findByRequesterId(Long requesterId);
+    List<ApprovalRequest> findByStatus(String status);
+
+    List<ApprovalRequest> findByRequestedBy_Id(Long userId);
 }

@@ -3,9 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "workflow_template", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "templateName")
-})
+@Table(name = "workflow_templates")
 public class WorkflowTemplate {
 
     @Id
@@ -13,43 +11,28 @@ public class WorkflowTemplate {
     private Long id;
 
     private String templateName;
+
     private String description;
-    private Integer totalLevels;
-    private Boolean active;
 
-    public Long getId() {
-        return id;
-    }
+    private int totalLevels;
 
-    public String getTemplateName() {
-        return templateName;
-    }
+    private boolean active;
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
-    }
+    public WorkflowTemplate() {}
 
-    public String getDescription() {
-        return description;
-    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getTemplateName() { return templateName; }
+    public void setTemplateName(String templateName) { this.templateName = templateName; }
 
-    public Integer getTotalLevels() {
-        return totalLevels;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setTotalLevels(Integer totalLevels) {
-        this.totalLevels = totalLevels;
-    }
+    public int getTotalLevels() { return totalLevels; }
+    public void setTotalLevels(int totalLevels) { this.totalLevels = totalLevels; }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }

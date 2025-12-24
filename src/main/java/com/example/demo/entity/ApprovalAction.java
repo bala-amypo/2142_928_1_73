@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "approval_actions")
 public class ApprovalAction {
 
     @Id
@@ -11,13 +12,16 @@ public class ApprovalAction {
     private Long id;
 
     private Long requestId;
-    private Long approverId;
-    private Integer levelNumber;
-    private String action;
-    private String comments;
-    private LocalDateTime actionDate;
 
-    public ApprovalAction() {}
+    private Long approverId;
+
+    private Integer levelNumber;
+
+    private String action;
+
+    private String comments;
+
+    private LocalDateTime actionDate;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

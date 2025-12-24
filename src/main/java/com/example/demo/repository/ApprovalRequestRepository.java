@@ -1,14 +1,85 @@
-package com.example.demo.repository;
+package com.example.demo.entity;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+@Entity
+@Table(name = "approval_request")
+public class ApprovalRequest {
 
-import com.example.demo.entity.ApprovalRequest;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-public interface ApprovalRequestRepository
-        extends JpaRepository<ApprovalRequest, Long> {
+    private Long templateId;
+    private Long requesterId;
+    private String requestTitle;
 
-    // ✅ FIXED: Id (capital I)
-    List<ApprovalRequest> findByRequesterId(Long requesterId);
+    @Lob
+    private String requestPayloadJson;
+
+    private String status;
+    private Integer currentLevel;
+    private LocalDateTime createdAt;
+
+    public ApprovalRequest() {
+        this.status = "PENDING";
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public Long getRequesterId() {
+        return requesterId;
+    }
+
+    public void setRequesterId(Long requesterId) {
+        this.requesterId = requesterId;
+    }
+
+    public String getRequestTitle() {
+        return requestTitle;
+    }
+
+    public void setRequestTitle(String requestTitle) {
+        this.requestTitle = requestTitle;
+    }
+
+    public String getRequestPayloadJson() {
+        return requestPayloadJson;
+    }
+
+    public void setRequestPayloadJson(String requestPayloadJson) {
+        this.requestPayloadJson = requestPayloadJson;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(Integer currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

@@ -1,51 +1,45 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ApprovalRequest;
+import com.example.demo.entity.WorkflowTemplate;
 import com.example.demo.repository.ApprovalRequestRepository;
+import com.example.demo.repository.WorkflowTemplateRepository;
 
 @Service
 public class ApprovalRequestService {
 
-    private final ApprovalRequestRepository repository;
+    private final ApprovalRequestRepository requestRepository;
+    private final WorkflowTemplateRepository templateRepository;
 
-    public ApprovalRequestService(ApprovalRequestRepository repository) {
-        this.repository = repository;
+    public ApprovalRequestService(ApprovalRequestRepository requestRepository,
+                                  WorkflowTemplateRepository templateRepository) {
+        this.requestRepository = requestRepository;
+        this.templateRepository = templateRepository;
     }
 
-    public ApprovalRequest createRequest(ApprovalRequest request) {
-        return repository.save(request);
+    public ApprovalRequest createRequest(ApprovalRequest request, Long templateId) {
+        WorkflowTemplate template = templateRepository.findById(templateId)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
+
+        request.setWorkflowTemplate(template);
+        request.setStatus("PENDING");
+        request.setCurrentLevel(1);
+        request.setCreatedAt(LocalDateTime.now());
+
+        return requestRepository.save(request);
     }
 
     public List<ApprovalRequest> getAllRequests() {
-        return repository.findAll();
+        return requestRepository.findAll();
     }
 
-    public ApprovalRequest getRequestById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    public ApprovalRequest approveRequest(Long id) {
-        Optional<ApprovalRequest> req = repository.findById(id);
-        if (req.isPresent()) {
-            ApprovalRequest r = req.get();
-            r.setStatus("APPROVED");
-            return repository.save(r);
-        }
-        return null;
-    }
-
-    public ApprovalRequest rejectRequest(Long id) {
-        Optional<ApprovalRequest> req = repository.findById(id);
-        if (req.isPresent()) {
-            ApprovalRequest r = req.get();
-            r.setStatus("REJECTED");
-            return repository.save(r);
-        }
-        return null;
+    public ApprovalRequest getRequest(Long id) {
+        return requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
     }
 }

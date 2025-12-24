@@ -17,6 +17,7 @@ public class WorkflowTemplateService {
     }
 
     public WorkflowTemplate createTemplate(WorkflowTemplate template) {
+        template.setActive(true);
         return repository.save(template);
     }
 
@@ -24,12 +25,8 @@ public class WorkflowTemplateService {
         return repository.findAll();
     }
 
-    public WorkflowTemplate activateTemplate(Long id) {
-        WorkflowTemplate template = repository.findById(id).orElse(null);
-        if (template != null) {
-            template.setActive(true);
-            return repository.save(template);
-        }
-        return null;
+    public WorkflowTemplate getTemplate(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
     }
 }

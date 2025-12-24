@@ -23,7 +23,7 @@ public class ApprovalActionService {
 
     public ApprovalAction takeAction(Long requestId, ApprovalAction action) {
         ApprovalRequest request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new RuntimeException("Approval Request not found"));
 
         action.setApprovalRequest(request);
         action.setActionAt(LocalDateTime.now());

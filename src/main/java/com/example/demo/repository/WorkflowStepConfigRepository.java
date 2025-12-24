@@ -1,14 +1,12 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
+import com.example.demo.entity.WorkflowStepConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.entity.WorkflowStepConfig;
+import java.util.List;
 
 public interface WorkflowStepConfigRepository
         extends JpaRepository<WorkflowStepConfig, Long> {
 
-    // ✅ FIXED: templateId (capital I)
-    List<WorkflowStepConfig> findByTemplateIdOrderByLevelNumberAsc(Long templateId);
+    List<WorkflowStepConfig> findByWorkflowTemplate_IdOrderByLevelAsc(Long templateId);
 }

@@ -15,8 +15,15 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.save(user);
+    @PostMapping("/register/{roleName}")
+    public User register(@RequestBody User user,
+                         @PathVariable String roleName) {
+        return userService.registerUser(user, roleName);
+    }
+
+    @PostMapping("/login")
+    public String login() {
+        // placeholder (JWT will be added later as per SRS phase)
+        return "Login successful";
     }
 }

@@ -27,8 +27,8 @@ public class WorkflowTemplateController {
         return service.getAllTemplates();
     }
 
-    @PutMapping("/{id}/activate")
-    public WorkflowTemplate activate(@PathVariable Long id) {
-        return service.activateTemplate(id);
+    @GetMapping("/{id}")
+    public WorkflowTemplate getById(@PathVariable Long id) {
+        return service.getTemplateById(id);
     }
 }

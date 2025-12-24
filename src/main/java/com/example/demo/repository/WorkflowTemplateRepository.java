@@ -1,55 +1,10 @@
-package com.example.demo.entity;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Entity
-@Table(name = "workflow_template", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "templateName")
-})
-public class WorkflowTemplate {
+import com.example.demo.entity.WorkflowTemplate;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String templateName;
-    private String description;
-    private Integer totalLevels;
-    private Boolean active;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTemplateName() {
-        return templateName;
-    }
-
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getTotalLevels() {
-        return totalLevels;
-    }
-
-    public void setTotalLevels(Integer totalLevels) {
-        this.totalLevels = totalLevels;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+public interface WorkflowTemplateRepository
+        extends JpaRepository<WorkflowTemplate, Long> {
 }
+

@@ -1,62 +1,14 @@
-package com.example.demo.entity;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
+import java.util.List;
 
-@Entity
-@Table(name = "workflow_step_config")
-public class WorkflowStepConfig {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.entity.WorkflowStepConfig;
 
-    private Long templateId;
-    private Integer levelNumber;
-    private String approverRole;
-    private Boolean isFinalStep;
-    private String instructions;
+public interface WorkflowStepConfigRepository
+        extends JpaRepository<WorkflowStepConfig, Long> {
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
-
-    public Integer getLevelNumber() {
-        return levelNumber;
-    }
-
-    public void setLevelNumber(Integer levelNumber) {
-        this.levelNumber = levelNumber;
-    }
-
-    public String getApproverRole() {
-        return approverRole;
-    }
-
-    public void setApproverRole(String approverRole) {
-        this.approverRole = approverRole;
-    }
-
-    public Boolean getIsFinalStep() {
-        return isFinalStep;
-    }
-
-    public void setIsFinalStep(Boolean isFinalStep) {
-        this.isFinalStep = isFinalStep;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
+    // ✅ FIXED: templateId (capital I)
+    List<WorkflowStepConfig> findByTemplateIdOrderByLevelNumberAsc(Long templateId);
 }

@@ -1,85 +1,14 @@
-package com.example.demo.entity;
+package com.example.demo.repository;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "approval_request")
-public class ApprovalRequest {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.entity.ApprovalRequest;
 
-    private Long templateId;
-    private Long requesterId;
-    private String requestTitle;
+public interface ApprovalRequestRepository
+        extends JpaRepository<ApprovalRequest, Long> {
 
-    @Lob
-    private String requestPayloadJson;
-
-    private String status;
-    private Integer currentLevel;
-    private LocalDateTime createdAt;
-
-    public ApprovalRequest() {
-        this.status = "PENDING";
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
-
-    public Long getRequesterId() {
-        return requesterId;
-    }
-
-    public void setRequesterId(Long requesterId) {
-        this.requesterId = requesterId;
-    }
-
-    public String getRequestTitle() {
-        return requestTitle;
-    }
-
-    public void setRequestTitle(String requestTitle) {
-        this.requestTitle = requestTitle;
-    }
-
-    public String getRequestPayloadJson() {
-        return requestPayloadJson;
-    }
-
-    public void setRequestPayloadJson(String requestPayloadJson) {
-        this.requestPayloadJson = requestPayloadJson;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public void setCurrentLevel(Integer currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    // ✅ FIXED: Id (capital I)
+    List<ApprovalRequest> findByRequesterId(Long requesterId);
 }

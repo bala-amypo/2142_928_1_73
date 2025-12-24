@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "approval_actions")
+@Table(name = "approval_action")
 public class ApprovalAction {
 
     @Id
@@ -12,35 +12,61 @@ public class ApprovalAction {
     private Long id;
 
     private Long requestId;
-
     private Long approverId;
-
     private Integer levelNumber;
-
     private String action;
-
     private String comments;
-
     private LocalDateTime actionDate;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public ApprovalAction() {
+        this.actionDate = LocalDateTime.now();
+    }
 
-    public Long getRequestId() { return requestId; }
-    public void setRequestId(Long requestId) { this.requestId = requestId; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getApproverId() { return approverId; }
-    public void setApproverId(Long approverId) { this.approverId = approverId; }
+    public Long getRequestId() {
+        return requestId;
+    }
 
-    public Integer getLevelNumber() { return levelNumber; }
-    public void setLevelNumber(Integer levelNumber) { this.levelNumber = levelNumber; }
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
 
-    public String getAction() { return action; }
-    public void setAction(String action) { this.action = action; }
+    public Long getApproverId() {
+        return approverId;
+    }
 
-    public String getComments() { return comments; }
-    public void setComments(String comments) { this.comments = comments; }
+    public void setApproverId(Long approverId) {
+        this.approverId = approverId;
+    }
 
-    public LocalDateTime getActionDate() { return actionDate; }
-    public void setActionDate(LocalDateTime actionDate) { this.actionDate = actionDate; }
+    public Integer getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(Integer levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public LocalDateTime getActionDate() {
+        return actionDate;
+    }
 }

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 
 @Service
-public class UserServiceImpl implements UserService {  // ONLY UserService, NOT UserDetailsService
+public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -57,25 +57,15 @@ public class UserServiceImpl implements UserService {  // ONLY UserService, NOT 
     
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+        // Return null instead of throwing exception (for AuthController to check)
+        return userRepository.findByUsername(username).orElse(null);
     }
     
     @Override
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+        // Return null instead of throwing exception (for AuthController to check)
+        return userRepository.findByEmail(email).orElse(null);
     }
-    @Override
-public User findByUsername(String username) {
-    return userRepository.findByUsername(username).orElse(null);
-}
-
-@Override
-public User findByEmail(String email) {
-    return userRepository.findByEmail(email).orElse(null);
-}
     
-    // Add other business methods here
-    // BUT NO loadUserByUsername() method - that belongs in CustomUserDetailsService
+    // Other business methods can be added here
 }

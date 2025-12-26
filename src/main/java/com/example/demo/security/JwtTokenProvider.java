@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.model.User;
+import com.example.demo.service.impl.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +26,16 @@ public class JwtTokenProvider {
     }
     
     public String generateToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        // Get the CustomUserDetails from authentication
+        CustomUserDetailsService.CustomUserDetails customUserDetails = 
+            (CustomUserDetailsService.CustomUserDetails) authentication.getPrincipal();
+        
+        // Get the User entity from CustomUserDetails
+        User user = customUserDetails.getUser();
+        
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         
-        // Fix: Properly collect role names as comma-separated string
         String roles = user.getRoles().stream()
             .map(role -> role.getName())
             .collect(Collectors.joining(","));

@@ -1,3 +1,17 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
     
@@ -14,12 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                     "User not found with username or email: " + usernameOrEmail)));
         
-        // Create a custom UserDetails that includes your User entity
         return new CustomUserDetails(user);
     }
     
-    // Custom UserDetails implementation
-    private class CustomUserDetails implements UserDetails {
+    // Custom UserDetails implementation that includes the User entity
+    public static class CustomUserDetails implements UserDetails {
         private final User user;
         
         public CustomUserDetails(User user) {

@@ -4,57 +4,88 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "approval_requests")
+@Table(name = "approval_request")
 public class ApprovalRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long templateld;
+    private Long requesterld;
+
     private String requestTitle;
 
-    private String description;
+    @Lob
+    private String requestPayloadJson;
 
-    private String status; // PENDING, APPROVED, REJECTED
-
-    private int currentLevel;
-
+    private String status;
+    private Integer currentLevel;
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User requestedBy;
+    public ApprovalRequest() {
+        this.status = "PENDING";
+        this.createdAt = LocalDateTime.now();
+        this.currentLevel = 1;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "template_id")
-    private WorkflowTemplate workflowTemplate;
+    public Long getId() {
+        return id;
+    }
 
-    public ApprovalRequest() {}
+    public Long getTemplateld() {
+        return templateld;
+    }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setTemplateld(Long templateld) {
+        this.templateld = templateld;
+    }
 
-    public String getRequestTitle() { return requestTitle; }
-    public void setRequestTitle(String requestTitle) { this.requestTitle = requestTitle; }
+    public Long getRequesterld() {
+        return requesterld;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setRequesterld(Long requesterld) {
+        this.requesterld = requesterld;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getRequestTitle() {
+        return requestTitle;
+    }
 
-    public int getCurrentLevel() { return currentLevel; }
-    public void setCurrentLevel(int currentLevel) { this.currentLevel = currentLevel; }
+    public void setRequestTitle(String requestTitle) {
+        this.requestTitle = requestTitle;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getRequestPayloadJson() {
+        return requestPayloadJson;
+    }
 
-    public User getRequestedBy() { return requestedBy; }
-    public void setRequestedBy(User requestedBy) { this.requestedBy = requestedBy; }
+    public void setRequestPayloadJson(String requestPayloadJson) {
+        this.requestPayloadJson = requestPayloadJson;
+    }
 
-    public WorkflowTemplate getWorkflowTemplate() { return workflowTemplate; }
-    public void setWorkflowTemplate(WorkflowTemplate workflowTemplate) {
-        this.workflowTemplate = workflowTemplate;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(Integer currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -4,38 +4,55 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "audit_log_record")
 public class AuditLogRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String action;
-
+    private Long requestld;
+    private String eventType;
     private String details;
+    private LocalDateTime loggedAt;
 
-    private LocalDateTime createdAt;
+    public AuditLogRecord() {
+        this.loggedAt = LocalDateTime.now();
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User performedBy;
+    public Long getId() {
+        return id;
+    }
 
-    public AuditLogRecord() {}
+    public Long getRequestld() {
+        return requestld;
+    }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setRequestld(Long requestld) {
+        this.requestld = requestld;
+    }
 
-    public String getAction() { return action; }
-    public void setAction(String action) { this.action = action; }
+    public String getEventType() {
+        return eventType;
+    }
 
-    public String getDetails() { return details; }
-    public void setDetails(String details) { this.details = details; }
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getDetails() {
+        return details;
+    }
 
-    public User getPerformedBy() { return performedBy; }
-    public void setPerformedBy(User performedBy) { this.performedBy = performedBy; }
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
+    }
 }

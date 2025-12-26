@@ -1,35 +1,38 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import com.example.demo.model.ApprovalRequest;
+import com.example.demo.service.ApprovalRequestService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.entity.ApprovalRequest;
-import com.example.demo.service.ApprovalRequestService;
+import java.util.List;
 
 @RestController
-@RequestMapping("/approval-requests")
+@RequestMapping("/api/requests")
+@RequiredArgsConstructor
+@Tag(name = "Approval Requests", description = "Approval Request Management APIs")
 public class ApprovalRequestController {
-
-    private final ApprovalRequestService service;
-
-    public ApprovalRequestController(ApprovalRequestService service) {
-        this.service = service;
+    
+    private final ApprovalRequestService requestService;
+    
+    @PostMapping
+    @Operation(summary = "Create an approval request")
+    public ResponseEntity<ApprovalRequest> createRequest(@RequestBody ApprovalRequest request) {
+        return ResponseEntity.ok(requestService.createRequest(request));
     }
-
-    @PostMapping("/{templateId}")
-    public ApprovalRequest create(@RequestBody ApprovalRequest request,
-                                  @PathVariable Long templateId) {
-        return service.createRequest(request, templateId);
-    }
-
+    
     @GetMapping
-    public List<ApprovalRequest> getAll() {
-        return service.getAllRequests();
+    @Operation(summary = "Get all approval requests")
+    public ResponseEntity<List<ApprovalRequest>> getAllRequests() {
+        return ResponseEntity.ok(requestService.getAllRequests());
     }
-
-    @GetMapping("/{id}")
-    public ApprovalRequest getById(@PathVariable Long id) {
-        return service.getRequestById(id);
+    
+    @GetMapping("/requester/{userId}")
+    @Operation(summary = "Get requests by requester")
+    public ResponseEntity<List<ApprovalRequest>> getRequestsByRequester(@PathVariable Long userId) {
+        return ResponseEntity.ok(requestService.getRequestsByRequester(userId));
     }
 }

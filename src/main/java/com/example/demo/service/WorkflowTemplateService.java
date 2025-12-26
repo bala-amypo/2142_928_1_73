@@ -10,23 +10,38 @@ import com.example.demo.repository.WorkflowTemplateRepository;
 @Service
 public class WorkflowTemplateService {
 
-    private final WorkflowTemplateRepository repository;
+    private final WorkflowTemplateRepository workflowTemplateRepository;
 
-    public WorkflowTemplateService(WorkflowTemplateRepository repository) {
-        this.repository = repository;
+    public WorkflowTemplateService(WorkflowTemplateRepository workflowTemplateRepository) {
+        this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
     public WorkflowTemplate createTemplate(WorkflowTemplate template) {
-        template.setActive(true);
-        return repository.save(template);
+        return workflowTemplateRepository.save(template);
+    }
+
+    public WorkflowTemplate getTemplateByld(Long id) {
+        return workflowTemplateRepository.findById(id).orElseThrow();
     }
 
     public List<WorkflowTemplate> getAllTemplates() {
-        return repository.findAll();
+        return workflowTemplateRepository.findAll();
     }
 
-    public WorkflowTemplate getTemplateById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Workflow Template not found"));
+    public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate updated) {
+        WorkflowTemplate existing = getTemplateByld(id);
+
+        existing.setTemplateName(updated.getTemplateName());
+        existing.setDescription(updated.getDescription());
+        existing.setTotalLevels(updated.getTotalLevels());
+        existing.setActive(updated.getActive());
+
+        return workflowTemplateRepository.save(existing);
+    }
+
+    public WorkflowTemplate activateTemplate(Long id, boolean active) {
+        WorkflowTemplate template = getTemplateByld(id);
+        template.setActive(active);
+        return workflowTemplateRepository.save(template);
     }
 }

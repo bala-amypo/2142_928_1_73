@@ -1,4 +1,3 @@
-// src/test/java/com/example/demo/DemoWorkflowEngineTestNGSuite.java
 package com.example.demo;
 
 import com.example.demo.dto.AuthRequest;
@@ -14,6 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -24,6 +27,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Listeners(TestResultListener.class)
 @SpringBootTest
 public class UserServiceTest extends AbstractTestNGSpringContextTests {
@@ -619,6 +624,16 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user.getRoles().add(role);
         user = userService.registerUser(user, "APPROVER");
 
+        // FIXED: Properly set authentication in security context
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            user.getUsername(),
+            null,
+            user.getRoles().stream()
+                .map(roleItem -> new SimpleGrantedAuthority("ROLE_" + roleItem.getName()))
+                .collect(Collectors.toList())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String token = tokenProvider.generateToken(user);
         Assert.assertNotNull(token);
         Long userIdFromToken = tokenProvider.getUserIdFromToken(token);
@@ -628,6 +643,17 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test(priority = 61)
     public void testJwtTokenValidationPositive() {
         User user = userService.findByUsername(jwtUsername);
+        
+        // FIXED: Properly set authentication in security context
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            user.getUsername(),
+            null,
+            user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
         String token = tokenProvider.generateToken(user);
         Assert.assertTrue(tokenProvider.validateToken(token));
     }
@@ -660,6 +686,16 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         user.setEmail(req.getEmail());
         user.setPassword(req.getPassword());
         user = userService.registerUser(user, req.getRole());
+
+        // FIXED: Properly set authentication in security context
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+            user.getUsername(),
+            null,
+            user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         AuthRequest authReq = new AuthRequest();
         authReq.setUsernameOrEmail(req.getUsername());

@@ -1,33 +1,26 @@
 package com.example.demo.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ApprovalAction;
-import com.example.demo.entity.ApprovalRequest;
 import com.example.demo.repository.ApprovalActionRepository;
 import com.example.demo.repository.ApprovalRequestRepository;
 
 @Service
 public class ApprovalActionService {
 
-    private final ApprovalActionRepository actionRepository;
-    private final ApprovalRequestRepository requestRepository;
+    private final ApprovalActionRepository approvalActionRepository;
+    private final ApprovalRequestRepository approvalRequestRepository;
 
-    public ApprovalActionService(ApprovalActionRepository actionRepository,
-                                 ApprovalRequestRepository requestRepository) {
-        this.actionRepository = actionRepository;
-        this.requestRepository = requestRepository;
+    public ApprovalActionService(
+            ApprovalActionRepository approvalActionRepository,
+            ApprovalRequestRepository approvalRequestRepository) {
+
+        this.approvalActionRepository = approvalActionRepository;
+        this.approvalRequestRepository = approvalRequestRepository;
     }
 
-    public ApprovalAction takeAction(Long requestId, ApprovalAction action) {
-        ApprovalRequest request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Approval Request not found"));
-
-        action.setApprovalRequest(request);
-        action.setActionAt(LocalDateTime.now());
-
-        return actionRepository.save(action);
+    public ApprovalAction recordAction(ApprovalAction action) {
+        return approvalActionRepository.save(action);
     }
 }

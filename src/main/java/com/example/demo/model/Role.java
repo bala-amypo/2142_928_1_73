@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;  // Use jakarta.persistence
+import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -17,4 +17,27 @@ public class Role {
     private Set<User> users;
     
     // Getters and setters
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public Set<User> getUsers() {
+        return users;
+    }
+    
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

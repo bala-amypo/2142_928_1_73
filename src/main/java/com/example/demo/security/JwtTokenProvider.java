@@ -29,7 +29,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         
-        // Fix the stream collection
+        // Fix: Properly collect role names as comma-separated string
         String roles = user.getRoles().stream()
             .map(role -> role.getName())
             .collect(Collectors.joining(","));
@@ -45,5 +45,35 @@ public class JwtTokenProvider {
             .compact();
     }
     
-    // Other methods...
+    public Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+            .setSigningKey(getSigningKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+        
+        return Long.parseLong(claims.getSubject());
+    }
+    
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+            .setSigningKey(getSigningKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+        
+        return claims.get("username", String.class);
+    }
+    
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

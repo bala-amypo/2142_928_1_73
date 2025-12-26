@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     
-    @Value("${app.jwt.secret}")
+    @Value("${app.jwt.secret:DefaultSecretKeyForDevelopmentOnlyChangeInProduction1234567890}")
     private String jwtSecret;
     
-    @Value("${app.jwt.expiration}")
+    @Value("${app.jwt.expiration:86400000}")
     private int jwtExpiration;
     
     private Key getSigningKey() {
@@ -29,7 +29,6 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         
-        // Fix: Properly collect role names as comma-separated string
         String roles = user.getRoles().stream()
             .map(role -> role.getName())
             .collect(Collectors.joining(","));

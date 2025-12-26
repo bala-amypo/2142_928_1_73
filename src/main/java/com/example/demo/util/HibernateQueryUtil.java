@@ -12,19 +12,19 @@ import java.util.List;
 
 @Component
 public class HibernateQueryUtil {
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     public List<ApprovalAction> findActionsByApproverUsingCriteria(Long approverId) {
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ApprovalAction> query = cb.createQuery(ApprovalAction.class);
-        Root<ApprovalAction> root = query.from(ApprovalAction.class);
-        
-        if (approverId != null) {
-            query.where(cb.equal(root.get("approverId"), approverId));
-        }
-        
-        return entityManager.createQuery(query).getResultList();
+        CriteriaQuery<ApprovalAction> cq = cb.createQuery(ApprovalAction.class);
+        Root<ApprovalAction> root = cq.from(ApprovalAction.class);
+
+        cq.select(root)
+          .where(cb.equal(root.get("approverId"), approverId));
+
+        return entityManager.createQuery(cq).getResultList();
     }
 }

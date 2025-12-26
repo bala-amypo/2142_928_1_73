@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/templates")
@@ -29,9 +30,9 @@ public class WorkflowTemplateController {
     @GetMapping("/{id}")
     @Operation(summary = "Get template by ID")
     public ResponseEntity<WorkflowTemplate> getTemplate(@PathVariable Long id) {
-        return templateService.getTemplateById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        Optional<WorkflowTemplate> template = templateService.getTemplateById(id);
+        return template.map(ResponseEntity::ok)
+                      .orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping

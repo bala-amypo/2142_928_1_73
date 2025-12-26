@@ -8,7 +8,6 @@ import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,15 +15,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Authentication and Registration APIs")
 public class AuthController {
     
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UserService userService;
+    
+    public AuthController(AuthenticationManager authenticationManager, 
+                         JwtTokenProvider tokenProvider, 
+                         UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.userService = userService;
+    }
     
     @PostMapping("/register")
     @Operation(summary = "Register a new user")
@@ -58,7 +66,7 @@ public class AuthController {
         response.setUsername(user.getUsername());
         response.setRoles(user.getRoles().stream()
             .map(role -> role.getName())
-            .collect(java.util.stream.Collectors.toSet()));
+            .collect(Collectors.toSet()));
         
         return ResponseEntity.ok(response);
     }

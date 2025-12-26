@@ -7,17 +7,23 @@ import com.example.demo.repository.ApprovalActionRepository;
 import com.example.demo.repository.ApprovalRequestRepository;
 import com.example.demo.repository.AuditLogRecordRepository;
 import com.example.demo.service.ApprovalActionService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class ApprovalActionServiceImpl implements ApprovalActionService {
     
     private final ApprovalActionRepository actionRepository;
     private final ApprovalRequestRepository requestRepository;
     private final AuditLogRecordRepository auditRepository;
+    
+    public ApprovalActionServiceImpl(ApprovalActionRepository actionRepository,
+                                    ApprovalRequestRepository requestRepository,
+                                    AuditLogRecordRepository auditRepository) {
+        this.actionRepository = actionRepository;
+        this.requestRepository = requestRepository;
+        this.auditRepository = auditRepository;
+    }
     
     @Override
     @Transactional

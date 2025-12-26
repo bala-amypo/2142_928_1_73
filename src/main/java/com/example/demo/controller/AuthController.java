@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
+import com.example.demo.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Authenticate user
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsernameOrEmail(),
@@ -41,19 +41,17 @@ public class AuthController {
             );
             
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            
-            // Generate JWT token
             String token = tokenProvider.generateToken(authentication);
             
-            // Get user details
-            User user = (User) authentication.getPrincipal();
+            // Get user details from CustomUserDetails
+            CustomUserDetailsService.CustomUserDetails customUserDetails = 
+                (CustomUserDetailsService.CustomUserDetails) authentication.getPrincipal();
+            User user = customUserDetails.getUser();
             
-            // Fix: Properly collect role names
             List<String> roleNames = user.getRoles().stream()
                 .map(role -> role.getName())
                 .collect(Collectors.toList());
             
-            // Prepare response
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("type", "Bearer");
@@ -76,7 +74,13 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
             // Check if user already exists
-            // (You might want to add these methods to your UserRepository)
+            if (userService.findByUsername(registerRequest.getUsername()) != null ||
+                userService.findByEmail(registerRequest.getEmail()) != null) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("message", "Registration failed");
+                errorResponse.put("error", "Username or email already exists");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
             
             // Create new user
             User user = new User();
@@ -84,7 +88,7 @@ public class AuthController {
             user.setEmail(registerRequest.getEmail());
             user.setPassword(registerRequest.getPassword());
             
-            // Register user with default role (e.g., "USER")
+            // Register user with default role
             User registeredUser = userService.registerUser(user, "USER");
             
             // Authenticate and generate token
@@ -98,7 +102,6 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = tokenProvider.generateToken(authentication);
             
-            // Prepare response
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("type", "Bearer");

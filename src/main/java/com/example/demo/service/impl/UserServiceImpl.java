@@ -66,6 +66,15 @@ public class UserServiceImpl implements UserService {  // ONLY UserService, NOT 
         return userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
+    @Override
+public User findByUsername(String username) {
+    return userRepository.findByUsername(username).orElse(null);
+}
+
+@Override
+public User findByEmail(String email) {
+    return userRepository.findByEmail(email).orElse(null);
+}
     
     // Add other business methods here
     // BUT NO loadUserByUsername() method - that belongs in CustomUserDetailsService

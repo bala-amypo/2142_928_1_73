@@ -2,49 +2,49 @@ package com.example.demo.controller;
 
 import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.service.WorkflowTemplateService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/templates")
-@Tag(name = "Workflow Template", description = "Workflow Template Management APIs")
 public class WorkflowTemplateController {
-    
-    private final WorkflowTemplateService templateService;
-    
-    public WorkflowTemplateController(WorkflowTemplateService templateService) {
-        this.templateService = templateService;
+
+    private final WorkflowTemplateService workflowTemplateService;
+
+    public WorkflowTemplateController(WorkflowTemplateService workflowTemplateService) {
+        this.workflowTemplateService = workflowTemplateService;
     }
-    
+
     @PostMapping
-    @Operation(summary = "Create a new workflow template")
-    public ResponseEntity<WorkflowTemplate> createTemplate(@RequestBody WorkflowTemplate template) {
-        return ResponseEntity.ok(templateService.createTemplate(template));
+    public WorkflowTemplate createTemplate(@RequestBody WorkflowTemplate template) {
+        return workflowTemplateService.createTemplate(template);
     }
-    
+
     @GetMapping("/{id}")
-    @Operation(summary = "Get template by ID")
-    public ResponseEntity<WorkflowTemplate> getTemplate(@PathVariable Long id) {
-        Optional<WorkflowTemplate> template = templateService.getTemplateById(id);
-        return template.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+    public WorkflowTemplate getTemplate(@PathVariable Long id) {
+        return workflowTemplateService.getTemplateById(id)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
     }
-    
+
     @GetMapping
-    @Operation(summary = "Get all templates")
-    public ResponseEntity<List<WorkflowTemplate>> getAllTemplates() {
-        return ResponseEntity.ok(templateService.getAllTemplates());
+    public List<WorkflowTemplate> getAllTemplates() {
+        return workflowTemplateService.getAllTemplates();
     }
-    
+
     @PutMapping("/{id}")
-    @Operation(summary = "Update template")
-    public ResponseEntity<WorkflowTemplate> updateTemplate(@PathVariable Long id, 
-                                                           @RequestBody WorkflowTemplate template) {
-        return ResponseEntity.ok(templateService.updateTemplate(id, template));
+    public WorkflowTemplate updateTemplate(
+            @PathVariable Long id,
+            @RequestBody WorkflowTemplate template
+    ) {
+        return workflowTemplateService.updateTemplate(id, template);
+    }
+
+    @PutMapping("/{id}/activate")
+    public WorkflowTemplate activateTemplate(
+            @PathVariable Long id,
+            @RequestParam boolean active
+    ) {
+        return workflowTemplateService.activateTemplate(id, active);
     }
 }

@@ -1,11 +1,12 @@
 package com.example.demo.repository;
 
-import java.util.List;
+import com.example.demo.model.ApprovalRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.ApprovalRequest;
+import org.springframework.stereotype.Repository;
 
-public interface ApprovalRequestRepository
-        extends JpaRepository<ApprovalRequest, Long> {
+import java.util.List;
 
-    List<ApprovalRequest> findByRequesterld(Long requesterld);
+@Repository
+public interface ApprovalRequestRepository extends JpaRepository<ApprovalRequest, Long> {
+    List<ApprovalRequest> findByRequesterId(Long requesterId);
 }

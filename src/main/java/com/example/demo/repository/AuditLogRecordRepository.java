@@ -1,11 +1,12 @@
 package com.example.demo.repository;
 
-import java.util.List;
+import com.example.demo.model.AuditLogRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.AuditLogRecord;
+import org.springframework.stereotype.Repository;
 
-public interface AuditLogRecordRepository
-        extends JpaRepository<AuditLogRecord, Long> {
+import java.util.List;
 
-    List<AuditLogRecord> findByRequestld(Long requestld);
+@Repository
+public interface AuditLogRecordRepository extends JpaRepository<AuditLogRecord, Long> {
+    List<AuditLogRecord> findByRequestId(Long requestId);
 }

@@ -4,7 +4,6 @@ import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.service.WorkflowTemplateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/templates")
-@RequiredArgsConstructor
 @Tag(name = "Workflow Template", description = "Workflow Template Management APIs")
 public class WorkflowTemplateController {
     
     private final WorkflowTemplateService templateService;
+    
+    public WorkflowTemplateController(WorkflowTemplateService templateService) {
+        this.templateService = templateService;
+    }
     
     @PostMapping
     @Operation(summary = "Create a new workflow template")

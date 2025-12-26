@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
     
     private final WorkflowTemplateRepository templateRepository;
+    
+    public WorkflowTemplateServiceImpl(WorkflowTemplateRepository templateRepository) {
+        this.templateRepository = templateRepository;
+    }
     
     @Override
     @Transactional

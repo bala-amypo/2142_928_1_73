@@ -1,9 +1,10 @@
 package com.example.demo.security;
 
 import com.example.demo.model.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     
-    private final Key key = Keys.hmacShaKeyFor(SecurityConstants.SECRET.getBytes());
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     
     public String generateToken(User user) {
         Date now = new Date();

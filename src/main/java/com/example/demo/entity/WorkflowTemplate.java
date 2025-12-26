@@ -3,7 +3,9 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "workflow_templates")
+@Table(name = "workflow_template", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "templateName")
+})
 public class WorkflowTemplate {
 
     @Id
@@ -11,28 +13,46 @@ public class WorkflowTemplate {
     private Long id;
 
     private String templateName;
-
     private String description;
+    private Integer totalLevels;
+    private Boolean active;
 
-    private int totalLevels;
+    public WorkflowTemplate() {
+    }
 
-    private boolean active;
+    public Long getId() {
+        return id;
+    }
 
-    public WorkflowTemplate() {}
+    public String getTemplateName() {
+        return templateName;
+    }
 
-    // Getters & Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
 
-    public String getTemplateName() { return templateName; }
-    public void setTemplateName(String templateName) { this.templateName = templateName; }
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Integer getTotalLevels() {
+        return totalLevels;
+    }
 
-    public int getTotalLevels() { return totalLevels; }
-    public void setTotalLevels(int totalLevels) { this.totalLevels = totalLevels; }
+    public void setTotalLevels(Integer totalLevels) {
+        this.totalLevels = totalLevels;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

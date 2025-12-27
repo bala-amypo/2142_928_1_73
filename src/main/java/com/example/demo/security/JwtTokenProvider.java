@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    private final String jwtSecret = "amypo-secret-key";
-    private final long jwtExpirationMs = 3600000; // 1 hour
+    private final String jwtSecret = "amypo_secret_key_123456";
+    private final long jwtExpirationMs = 86400000; // 1 hour
 
     public String generateToken(User user) {
 

@@ -10,11 +10,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    private final String jwtSecret = "amypo_secret_key_123456";
-    private final long jwtExpirationMs = 86400000; // 1 hour
+    private final String jwtSecret = SecurityConstants.SECRET_KEY;
+    private final long jwtExpirationMs = SecurityConstants.EXPIRATION_TIME; // 24 hours
 
     public String generateToken(User user) {
-
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getId())
@@ -23,7 +22,7 @@ public class JwtTokenProvider {
                     "roles",
                     user.getRoles()
                         .stream()
-                        .map(Role -> Role.getName())
+                        .map(role -> role.getName())  // Fixed: 'role' not 'Role'
                         .collect(Collectors.toList())
                 )
                 .setIssuedAt(new Date())
@@ -33,13 +32,20 @@ public class JwtTokenProvider {
     }
 
     public String getUsernameFromToken(String token) {
-        return parseClaims(token).getSubject();
+        try {
+            return parseClaims(token).getSubject();
+        } catch (Exception e) {
+            return null;
+        }
     }
-
    
     public Long getUserIdFromToken(String token) {
-        Object value = parseClaims(token).get("userId");
-        return value == null ? null : Long.valueOf(value.toString());
+        try {
+            Object value = parseClaims(token).get("userId");
+            return value == null ? null : Long.valueOf(value.toString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public boolean validateToken(String token) {
@@ -47,6 +53,7 @@ public class JwtTokenProvider {
             parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            System.err.println("Token validation failed: " + e.getMessage());
             return false;
         }
     }

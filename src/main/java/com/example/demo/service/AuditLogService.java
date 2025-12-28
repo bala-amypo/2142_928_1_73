@@ -1,11 +1,23 @@
 package com.example.demo.service;
 
 import com.example.demo.model.AuditLogRecord;
-import java.util.List;
+import com.example.demo.repository.AuditLogRecordRepository;
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
-public interface AuditLogService {
+@Service
+public class AuditLogService {
 
-    AuditLogRecord logEvent(Long requestId, String eventType, String details);
+    private final AuditLogRecordRepository auditLogRecordRepository;
 
-    List<AuditLogRecord> getLogsByRequestId(Long requestId);
+    public AuditLogService(AuditLogRecordRepository auditLogRecordRepository) {
+        this.auditLogRecordRepository = auditLogRecordRepository;
+    }
+
+    public AuditLogRecord save(AuditLogRecord record) {
+        if (record.getLoggedAt() == null) {
+            record.setLoggedAt(LocalDateTime.now());
+        }
+        return auditLogRecordRepository.save(record);
+    }
 }

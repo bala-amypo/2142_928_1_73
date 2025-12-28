@@ -6,65 +6,48 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(
-            UserService userService,
-            JwtTokenProvider jwtTokenProvider,
-            AuthenticationManager authenticationManager
-    ) {
-        this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-
-        return userService.registerUser(user, request.getRole());
+        
+        User savedUser = userService.registerUser(user, request.getRoleName());
+        String token = tokenProvider.generateToken(savedUser);
+        
+        return ResponseEntity.ok(new AuthResponse(token, savedUser.getUsername()));
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
-
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsernameOrEmail(),
-                        request.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-
-        org.springframework.security.core.userdetails.User principal =
-                (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-
-        User user = userService.findByUsername(principal.getUsername());
-
-        String token = jwtTokenProvider.generateToken(user);
-
-        List<String> roles = principal.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        return new AuthResponse(token, user.getUsername(), roles);
+        
+        User user = userService.findByUsername(request.getUsername());
+        String token = tokenProvider.generateToken(user);
+        
+        return ResponseEntity.ok(new AuthResponse(token, user.getUsername()));
     }
 }

@@ -2,27 +2,27 @@ package com.example.demo.controller;
 
 import com.example.demo.model.WorkflowStepConfig;
 import com.example.demo.service.WorkflowStepConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/steps")
 public class WorkflowStepConfigController {
 
-    private final WorkflowStepConfigService workflowStepConfigService;
+    @Autowired
+    private WorkflowStepConfigService workflowStepConfigService;
 
-    public WorkflowStepConfigController(WorkflowStepConfigService workflowStepConfigService) {
-        this.workflowStepConfigService = workflowStepConfigService;
-    }
-
-    @PostMapping
-    public WorkflowStepConfig createStep(@RequestBody WorkflowStepConfig step) {
-        return workflowStepConfigService.createStep(step);
+    @PostMapping("/")
+    public ResponseEntity<WorkflowStepConfig> create(@RequestBody WorkflowStepConfig stepConfig) {
+        WorkflowStepConfig saved = workflowStepConfigService.save(stepConfig);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("/template/{templateId}")
-    public List<WorkflowStepConfig> getStepsByTemplate(@PathVariable Long templateId) {
-        return workflowStepConfigService.getStepsForTemplate(templateId);
+    public ResponseEntity<List<WorkflowStepConfig>> getByTemplateId(@PathVariable Long templateId) {
+        List<WorkflowStepConfig> steps = workflowStepConfigService.findByTemplateId(templateId);
+        return ResponseEntity.ok(steps);
     }
 }

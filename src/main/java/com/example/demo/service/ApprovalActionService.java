@@ -1,8 +1,27 @@
 package com.example.demo.service;
 
 import com.example.demo.model.ApprovalAction;
+import com.example.demo.repository.ApprovalActionRepository;
+import com.example.demo.repository.ApprovalRequestRepository;
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
-public interface ApprovalActionService {
+@Service
+public class ApprovalActionService {
 
-    ApprovalAction recordAction(ApprovalAction action);
+    private final ApprovalActionRepository approvalActionRepository;
+    private final ApprovalRequestRepository approvalRequestRepository;
+
+    public ApprovalActionService(ApprovalActionRepository approvalActionRepository,
+                               ApprovalRequestRepository approvalRequestRepository) {
+        this.approvalActionRepository = approvalActionRepository;
+        this.approvalRequestRepository = approvalRequestRepository;
+    }
+
+    public ApprovalAction save(ApprovalAction action) {
+        if (action.getActionDate() == null) {
+            action.setActionDate(LocalDateTime.now());
+        }
+        return approvalActionRepository.save(action);
+    }
 }
